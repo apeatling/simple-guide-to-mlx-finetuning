@@ -26,13 +26,13 @@ foreach ( $instructions as $i => $instruction ) {
 	file_put_contents( 'output.jsonl', $output, FILE_APPEND );
 }
 
-function query_ollama( $prompt, $model = 'mistral' ) {
+function query_ollama( $prompt, $model = 'mistral', $context = '' ) {
 	$ch = curl_init( 'http://localhost:11434/api/generate' );
 
 	curl_setopt( $ch, CURLOPT_POSTFIELDS, json_encode([
 		"model" => $model,
 		"stream" => false,
-		"prompt" => "You are assisting a user who has a question related to WordPress. Please provide clear answers with examples when appropriate. The user's question is: " . $prompt
+		"prompt" => $context . $prompt
 	] ) );
 	curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
 
