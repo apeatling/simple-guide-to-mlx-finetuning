@@ -40,8 +40,8 @@ function create_val_file() {
 	$valLines = array_slice( $trainLines, 0, $twentyPercent );
 	$trainLines = array_slice( $trainLines, $twentyPercent );
 
-	$train = implode("\n", $trainLines);
-	$val = implode("\n", $valLines);
+	$train = implode( "\n", $trainLines) ;
+	$val = implode( "\n", $valLines );
 
 	file_put_contents( 'train.jsonl', $train);
 	file_put_contents( 'val.jsonl', $val);
