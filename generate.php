@@ -72,3 +72,4 @@ foreach ( $instructions as $i => $instruction ) {
 
 create_valid_file();
 
+echo "Done! Training and validation JSONL files created.\n";
