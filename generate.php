@@ -26,7 +26,7 @@ function query_ollama( $prompt, $model = 'mistral', $context = '' ) {
 	return trim( $answer );
 }
 
-function create_val_file() {
+function create_valid_file() {
 	if ( ! file_exists( 'train.jsonl' ) ) {
 		die( 'No train.jsonl file found!' );
 	}
@@ -44,7 +44,7 @@ function create_val_file() {
 	$val = implode( "\n", $valLines );
 
 	file_put_contents( 'train.jsonl', $train);
-	file_put_contents( 'val.jsonl', $val);
+	file_put_contents( 'valid.jsonl', $val);
 }
 
 $json = file_get_contents( 'instructions.json' );
@@ -70,5 +70,5 @@ foreach ( $instructions as $i => $instruction ) {
 	file_put_contents( 'train.jsonl', $output, FILE_APPEND );
 }
 
-create_val_file();
+create_valid_file();
 
