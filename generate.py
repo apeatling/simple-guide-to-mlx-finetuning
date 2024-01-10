@@ -4,18 +4,14 @@ import sys
 from pathlib import Path
 
 def query_ollama(prompt, model='mistral', context=''):
-    answer_marker = "Answer:"
-    followup_marker = "Follow-up question:"
-    full_prompt = f"{context}{prompt}\n{answer_marker}"
     url = 'http://localhost:11434/api/generate'
-    data = {"model": model, "stream": False, "prompt": full_prompt}
+    data = {"model": model, "stream": False, "prompt": context+prompt}
     response = requests.post(url, json=data)
     response.raise_for_status()
-    full_response = response.json()['response'].strip()
-    parts = full_response.split(followup_marker)
-    answer = parts[0].replace(answer_marker, '').strip()
-    followup_question = parts[1].strip() if len(parts) > 1 else "No follow-up question provided."
-    return answer, followup_question
+    followup_data = {"model": model, "stream": False, "prompt": response.json()['response'].strip() + "What is a likely follow-up question or request? Return just the text of one question or request."}
+    followup_response = requests.post(url, json=followup_data)
+    followup_response.raise_for_status()
+    return response.json()['response'].strip(), followup_response.json()['response'].replace("\"", "").strip()
 
 def create_validation_file(train_file, valid_file, split_ratio):
     with open(train_file, 'r') as file:
