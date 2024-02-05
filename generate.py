@@ -2,8 +2,9 @@ import json
 import requests
 import sys
 from pathlib import Path
+from colorama import Fore, Style, init
 
-def query_ollama(prompt, model='mistral', context=''):
+def query_ollama(prompt, model='miqu70b_q3_kl', context=''):
     url = 'http://localhost:11434/api/generate'
     data = {"model": model, "stream": False, "prompt": context+prompt}
     response = requests.post(url, json=data)
@@ -31,8 +32,11 @@ def main(instructions_file, train_file, valid_file, split_ratio):
         instructions = json.load(file)
 
     for i, instruction in enumerate(instructions, start=1):
-        print(f"Processing ({i}/{len(instructions)}): {instruction}")
+        print(Fore.WHITE + f"Processing ({i}/{len(instructions)}): {instruction}")
         answer, followup_question = query_ollama(instruction)
+        print(Fore.YELLOW + '-' * 50)
+        print(Fore.CYAN + answer)
+        print()
         result = json.dumps({
             'text': f'<s>[INST] {instruction}[/INST] {answer}</s>[INST]{followup_question}[/INST]'
         }) + "\n"
