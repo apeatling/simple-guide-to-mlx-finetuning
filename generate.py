@@ -4,7 +4,7 @@ import sys
 from pathlib import Path
 from colorama import Fore, Style, init
 
-def query_ollama(prompt, model='miqu70b_q3_kl', context=''):
+def query_ollama(prompt, model='mistral', context=''):
     url = 'http://localhost:11434/api/generate'
     data = {"model": model, "stream": False, "prompt": context+prompt}
     response = requests.post(url, json=data)
